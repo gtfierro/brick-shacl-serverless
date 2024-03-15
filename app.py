@@ -38,7 +38,8 @@ def hello() -> str:
 # FLASK handler which accepts a POST request with a JSON payload
 @app.route("/validate", methods=["POST"])
 def validate_graph() -> str:
-    body = request.json()
+    print(request)
+    body = request
     # data graph
     data = Graph()
     data.parse(data=body['data'], format="json-ld")
