@@ -25,7 +25,7 @@ from brick_tq_shacl.topquadrant_shacl import validate, infer
 
 app = Flask(__name__)
 
-env = ontoenv.OntoEnv()
+env = ontoenv.OntoEnv(initialize=True)
 
 s = Graph()
 s.parse("https://github.com/BrickSchema/Brick/releases/download/nightly/Brick.ttl", format="ttl")
