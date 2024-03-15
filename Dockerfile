@@ -26,6 +26,10 @@ COPY requirements.txt ./
 # Install dependencies.
 RUN pip install -r requirements.txt
 
+# install runtime with yum
+RUN dnf update -y && \
+    dnf install -y java-1.8.0
+
 # Copy local code to the container image.
 COPY . ./
 

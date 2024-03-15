@@ -15,10 +15,12 @@
 import signal
 import sys
 from types import FrameType
+from rdflib import Graph
 
-from flask import Flask
+from flask import Flask, request, jsonify
 
 from utils.logging import logger
+from brick_tq_shacl.topquadrant_shacl import validate, infer
 
 app = Flask(__name__)
 
@@ -33,6 +35,21 @@ def hello() -> str:
 
     return "Hello, World!"
 
+# FLASK handler which accepts a POST request with a JSON payload
+@app.route("/validate", methods=["POST"])
+def validate_graph() -> str:
+    body = request.json()
+    # data graph
+    data = Graph()
+    data.parse(data=body['data'], format="json-ld")
+
+    s = Graph()
+    s.parse("https://github.com/BrickSchema/Brick/releases/download/nightly/Brick.ttl", format="ttl")
+
+    # validate the data graph against the SHACL graph
+    valid, _, report_str = validate(data, s)
+    # return JSON response
+    return jsonify({"valid": valid, "report": report_str})
 
 def shutdown_handler(signal_int: int, frame: FrameType) -> None:
     logger.info(f"Caught Signal {signal.strsignal(signal_int)}")
