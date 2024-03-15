@@ -7,4 +7,5 @@ structlog==24.1.0
 google-auth==2.3.2
 
 rdflib
+ontoenv
 brick-tq-shacl==0.3.1
